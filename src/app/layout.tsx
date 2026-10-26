@@ -25,7 +25,8 @@ const description =
   "An independent automotive encyclopedia covering manufacturers, landmark cars and the eras of motoring history, from pioneering classics to the electric age.";
 
 export const metadata: Metadata = {
-  title,
+  // Detail pages set their own name; the template adds the site name after it.
+  title: { default: title, template: "%s — Auto Chronicle" },
   description,
   applicationName: "Auto Chronicle",
   openGraph: {

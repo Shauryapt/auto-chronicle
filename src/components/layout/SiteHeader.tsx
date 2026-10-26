@@ -34,14 +34,14 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          {/* A plain anchor, so the hash change can move focus into the search field. */}
-          <a
-            href="#search"
+          {/* SearchPanel focuses its field when a link ending in #search is clicked, or on arrival at /#search from another page. */}
+          <Link
+            href="/#search"
             className="inline-flex min-h-11 items-center gap-2.5 rounded-xs border border-line-strong px-3.5 text-[0.9375rem] text-ivory transition-colors duration-(--dur-fast) hover:border-ivory sm:min-w-52 lg:min-w-0 xl:min-w-52"
           >
             <SearchIcon />
             <span className="sr-only sm:not-sr-only lg:sr-only xl:not-sr-only">Search the archive</span>
-          </a>
+          </Link>
           <MobileMenu items={primaryNav} />
         </div>
       </div>

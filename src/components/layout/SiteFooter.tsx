@@ -15,8 +15,8 @@ export function SiteFooter() {
           <p className="mt-5 font-display text-display-sm text-stone italic">Every Car. Every Era. Every Story.</p>
         </div>
 
-        <nav aria-label="Sections on this page" className="md:col-span-3">
-          <h2 className="font-sans text-label font-medium text-ash">On this page</h2>
+        <nav aria-label="Homepage sections" className="md:col-span-3">
+          <h2 className="font-sans text-label font-medium text-ash">Explore</h2>
           <ul className="mt-4 space-y-1">
             {homeSections.map((s) => (
               <li key={s.href}>

@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { CategorySlug } from "@/data/types";
-import { searchEntries, type SearchEntry } from "@/lib/search";
+import { searchEntries, type SearchEntry } from "@/lib/search-match";
 import { SearchIcon } from "@/components/ui/icons";
 
 export type SearchCategoryOption = { slug: CategorySlug; name: string };
@@ -27,7 +28,15 @@ function writeUrl(update: Record<string, string | null>) {
 
 export function SearchPanel({ index, categoryOptions, scopeNote }: SearchPanelProps) {
   const searchParams = useSearchParams();
-  const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
+  const urlQuery = searchParams.get("q") ?? "";
+  const [query, setQuery] = useState(urlQuery);
+  // Follow the address when it changes from outside, such as the wordmark clearing it. Typing writes
+  // the trimmed query to the address, so an equal trimmed value is not an outside change.
+  const [seenUrlQuery, setSeenUrlQuery] = useState(urlQuery);
+  if (urlQuery !== seenUrlQuery) {
+    setSeenUrlQuery(urlQuery);
+    if (urlQuery !== query.trim()) setQuery(urlQuery);
+  }
   const inputRef = useRef<HTMLInputElement>(null);
   const inputId = useId();
   const statusId = useId();
@@ -135,7 +144,7 @@ export function SearchPanel({ index, categoryOptions, scopeNote }: SearchPanelPr
         <ul className="mt-4 border-t border-line">
           {results.map((entry) => (
             <li key={entry.id} className="border-b border-line">
-              <a
+              <Link
                 href={entry.href}
                 className="group grid gap-1 py-4 transition-colors duration-(--dur-fast) sm:grid-cols-[8rem_1fr] sm:gap-6"
               >
@@ -146,7 +155,7 @@ export function SearchPanel({ index, categoryOptions, scopeNote }: SearchPanelPr
                   </span>
                   <span className="mt-1 block text-stone">{entry.detail}</span>
                 </span>
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

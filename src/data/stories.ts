@@ -20,7 +20,7 @@ export const stories: Story[] = [
       focus: "50% 60%",
       creditId: "story-911-1964",
     },
-    related: { label: "Porsche 911 (992) in the archive", href: "#car-porsche-911-992" },
+    related: { label: "Porsche 911 (992) in the archive", href: "/cars/porsche-911-992" },
   },
   {
     slug: "citroen-courage",
@@ -33,7 +33,7 @@ export const stories: Story[] = [
       focus: "60% 60%",
       creditId: "story-citroen-ds",
     },
-    related: { label: "Citroën in the marque index", href: "#marque-citroen" },
+    related: { label: "Citroën DS in the archive", href: "/cars/citroen-ds" },
   },
   {
     slug: "behind-the-driver",
@@ -46,6 +46,6 @@ export const stories: Story[] = [
       focus: "45% 45%",
       creditId: "story-miura-engine",
     },
-    related: { label: "The performance age", href: "#era-performance" },
+    related: { label: "The performance age", href: "/#era-performance" },
   },
 ];

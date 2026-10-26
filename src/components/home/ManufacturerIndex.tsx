@@ -1,20 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { manufacturers, regions } from "@/data/manufacturers";
-import type { ManufacturerLogo } from "@/data/types";
-import { vehicles } from "@/data/vehicles";
+import { getVehiclesByManufacturer } from "@/data/vehicles";
+import { ManufacturerLogoImage } from "@/components/ui/ManufacturerLogoImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-
-const LOGO_BOX_PX = 44;
-
-/**
- * Logos range from square emblems to wordmarks fifteen times wider than tall. Scaling height
- * down as the aspect ratio grows keeps their visual weight similar inside the same 44px slot.
- */
-function logoHeight({ src }: ManufacturerLogo) {
-  const ratio = src.width / src.height;
-  return `${Math.min(LOGO_BOX_PX, LOGO_BOX_PX * ratio ** -0.4) / 16}rem`;
-}
 
 export function ManufacturerIndex() {
   return (
@@ -23,7 +11,7 @@ export function ManufacturerIndex() {
         <SectionHeading
           id="manufacturers-title"
           title="Explore manufacturers"
-          aside="Auto Chronicle is independent. Marque names and logos are trademarks of their owners, shown for identification only, and full marque profiles are in preparation."
+          aside="Auto Chronicle is independent. Marque names and logos are trademarks of their owners, shown for identification only. Some marque profiles are still in preparation."
         >
           A first index of marques, grouped by where they began. Each profile will cover the company&rsquo;s history,
           its defining cars and the people behind them.
@@ -47,7 +35,7 @@ export function ManufacturerIndex() {
 
                 <ul className={`mt-5 grid border-t border-l border-line sm:grid-cols-2 ${columns}`}>
                   {inRegion.map((maker) => {
-                    const featured = vehicles.filter((v) => v.manufacturerSlug === maker.slug);
+                    const featured = getVehiclesByManufacturer(maker.slug);
                     return (
                       <li
                         key={maker.slug}
@@ -55,26 +43,24 @@ export function ManufacturerIndex() {
                         className="flex flex-col border-r border-b border-line p-5 sm:p-6 sm:max-lg:odd:last:col-span-2 lg:p-5 xl:p-6"
                       >
                         <p className="text-label text-ash">{maker.country}</p>
-                        {/* Fixed-height slot so names line up across a row; the name below carries the meaning, so alt is empty. */}
-                        {maker.logo && (
-                          <div className="mt-4 flex h-11 items-center">
-                            <Image
-                              src={maker.logo.src}
-                              alt=""
-                              className={`w-auto max-w-full object-contain object-left ${maker.logo.tone === "mono" ? "logo-mono" : ""}`}
-                              style={{ height: logoHeight(maker.logo) }}
-                            />
-                          </div>
-                        )}
-                        <p className="mt-3 font-display text-[clamp(1.5rem,1.05rem+0.9vw,2.125rem)] leading-tight text-ivory">{maker.name}</p>
+                        {/* Fixed-height slot so names line up across a row. */}
+                        {maker.logo && <ManufacturerLogoImage logo={maker.logo} boxPx={44} className="mt-4" />}
+                        <p className="mt-3 font-display text-[clamp(1.5rem,1.05rem+0.9vw,2.125rem)] leading-tight text-ivory">
+                          <Link
+                            href={`/manufacturers/${maker.slug}`}
+                            className="decoration-crimson decoration-1 underline-offset-[0.2em] hover:underline"
+                          >
+                            {maker.name}
+                          </Link>
+                        </p>
                         <p className="mt-3 text-stone">{maker.knownFor}</p>
                         {featured.length > 0 && (
                           <p className="mt-auto pt-4 text-label text-ash">
-                            In featured cars:{" "}
+                            In the archive:{" "}
                             {featured.map((v, i) => (
                               <span key={v.slug}>
                                 {i > 0 && ", "}
-                                <Link href={`#car-${v.slug}`} className="link-quiet text-ivory">
+                                <Link href={`/cars/${v.slug}`} className="link-quiet text-ivory">
                                   {v.name}
                                 </Link>
                               </span>
