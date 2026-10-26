@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#131211"/>
+  <text x="32" y="41" text-anchor="middle" font-family="Didot, 'Bodoni 72', 'Bodoni Moda', Georgia, serif" font-size="30" letter-spacing="1" fill="#efe9de">AC</text>
+  <rect x="22" y="48" width="20" height="2" fill="#a51c30"/>
+</svg>

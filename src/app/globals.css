@@ -1,26 +1,193 @@
 @import "tailwindcss";
 
+/*
+ * Auto Chronicle design tokens.
+ * Colours, type and motion live here so components share one vocabulary:
+ * bg-ink, text-ivory, border-line, font-display, text-display-xl, and so on.
+ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ink: #131211;
+  --ink-raised: #1b1a18;
+  --ink-high: #26241f;
+  --ivory: #efe9de;
+  --stone: #bcb5a9;
+  --ash: #8f897f;
+  --crimson: #a51c30;
+  --crimson-hover: #bd2239;
+  --crimson-text: #e3586b;
+  --line: rgb(239 233 222 / 0.12);
+  --line-strong: rgb(239 233 222 / 0.26);
+
+  --gutter: clamp(1rem, 4vw, 3rem);
+  /* Vertical rhythm: section padding (doubled where two sections meet), then heading-to-content, applied as mt-(--heading-gap). */
+  --section-y: clamp(3.5rem, 6vw, 6rem);
+  --heading-gap: clamp(2.25rem, 1.5rem + 2vw, 3.25rem);
+  --header-h: 4.25rem;
+
+  --dur-fast: 160ms;
+  --dur-base: 280ms;
+  --dur-slow: 900ms;
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink: var(--ink);
+  --color-ink-raised: var(--ink-raised);
+  --color-ink-high: var(--ink-high);
+  --color-ivory: var(--ivory);
+  --color-stone: var(--stone);
+  --color-ash: var(--ash);
+  --color-crimson: var(--crimson);
+  --color-crimson-hover: var(--crimson-hover);
+  --color-crimson-text: var(--crimson-text);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --font-display: var(--font-bodoni), "Didot", "Bodoni 72", Georgia, serif;
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+
+  --text-display-xl: clamp(3.25rem, 1.4rem + 7.4vw, 8.25rem);
+  --text-display-xl--line-height: 0.92;
+  --text-display-xl--letter-spacing: -0.02em;
+  --text-display-lg: clamp(2.25rem, 1.4rem + 3.4vw, 4.25rem);
+  --text-display-lg--line-height: 1;
+  --text-display-lg--letter-spacing: -0.015em;
+  --text-display-md: clamp(1.625rem, 1.25rem + 1.4vw, 2.5rem);
+  --text-display-md--line-height: 1.08;
+  --text-display-sm: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+  --text-display-sm--line-height: 1.15;
+  --text-lede: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --text-lede--line-height: 1.6;
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.35;
+
+  --container-page: 88rem;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    background: var(--ink);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background: var(--ink);
+    color: var(--ivory);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--crimson);
+    color: var(--ivory);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ivory);
+    outline-offset: 3px;
+  }
+
+  /* Anchored sections land below the sticky header. */
+  [id] {
+    scroll-margin-top: calc(var(--header-h) + 1.5rem);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* A light, consistent grade so photographs from different sources sit together. */
+  .photo-grade {
+    filter: saturate(0.78) contrast(1.05) brightness(0.9);
+  }
+
+  /* Renders a single-colour logo file in ivory (black, then inverted and warmed), keeping its exact shape. */
+  .logo-mono {
+    filter: brightness(0) invert(0.93) sepia(0.12);
+  }
+
+  /* Underline that settles in on hover for inline text links. */
+  .link-quiet {
+    text-decoration-line: underline;
+    text-decoration-color: var(--line-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color var(--dur-fast) ease, color var(--dur-fast) ease;
+  }
+  .link-quiet:hover {
+    text-decoration-color: var(--crimson-text);
+  }
+}
+
+@utility page-container {
+  width: 100%;
+  max-width: var(--container-page);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+@utility section-y {
+  padding-block: var(--section-y);
+}
+
+/* The hero's one orchestrated entrance. Content is visible by default; motion is an enhancement. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+}
+
+@keyframes plate-in {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .enter-rise {
+    animation: rise-in var(--dur-slow) var(--ease-out-soft) both;
+    animation-delay: var(--enter-delay, 0ms);
+  }
+  .enter-plate {
+    animation: plate-in 1600ms var(--ease-out-soft) both;
+  }
+
+}
+
+/*
+ * Scroll-linked reveal for a few index sections, where supported. Without support, content simply shows.
+ * The range ends after a fixed distance so tall elements (long lists on mobile) are not left half-faded.
+ */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 10rem;
+    }
+  }
 }
