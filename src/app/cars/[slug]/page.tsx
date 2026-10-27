@@ -17,6 +17,7 @@ import { ReviewNote } from "@/components/detail/ReviewNote";
 import { VersionList } from "@/components/detail/VersionList";
 import { ManufacturerLogoImage } from "@/components/ui/ManufacturerLogoImage";
 import { CarGallery, type GalleryItem } from "@/components/vehicles/CarGallery";
+import { CinematicIntro } from "@/components/vehicles/CinematicIntro";
 import { VehicleCard } from "@/components/vehicles/VehicleCard";
 
 /**
@@ -67,7 +68,10 @@ export default async function CarPage({ params }: PageProps<"/cars/[slug]">) {
   ]);
 
   // The lead photograph first, then the supporting images, each with its credit resolved for the viewer.
-  const galleryPhotos = [car.photo, ...(car.gallery ?? [])];
+  // A title sequence already opens on the lead photograph, so the gallery then leads with the next one
+  // and keeps the lead as its last image.
+  const supporting = car.gallery ?? [];
+  const galleryPhotos = car.intro && supporting.length > 0 ? [...supporting, car.photo] : [car.photo, ...supporting];
   const galleryItems: GalleryItem[] = galleryPhotos.map((photo) => {
     const credit = imageCredits[photo.creditId];
     return {
@@ -83,6 +87,17 @@ export default async function CarPage({ params }: PageProps<"/cars/[slug]">) {
 
   const photoCredits = [...galleryPhotos, ...related.map((v) => v.photo)].map((p) => imageCredits[p.creditId]);
   const logoCreditList = maker?.logo ? [logoCredits[maker.logo.creditId]] : [];
+
+  const summary = (
+    <>
+      <p className="max-w-prose text-lede text-stone">{car.summary}</p>
+      <ReviewNote
+        review={car.review}
+        className="mt-6"
+        pendingText="This entry shows sample facts only. Its history and specifications will be added with sources."
+      />
+    </>
+  );
 
   return (
     <article>
@@ -110,29 +125,33 @@ export default async function CarPage({ params }: PageProps<"/cars/[slug]">) {
           ]}
         />
 
-        <div className="enter-rise mt-8 grid gap-6 lg:mt-12 lg:grid-cols-12 lg:items-end lg:gap-12">
-          <div className="lg:col-span-7">
-            {maker && (
-              <Link href={`/manufacturers/${maker.slug}`} className="link-quiet text-label text-crimson-text">
-                {maker.name}
-              </Link>
-            )}
-            <h1 className="mt-3 text-display-lg text-ivory">{car.name}</h1>
-            <p className="mt-4 text-label text-ash">{car.kind}</p>
+        {car.intro ? (
+          <div className="mt-4 lg:mt-6">
+            <CinematicIntro key={car.slug} car={car} intro={car.intro} maker={maker}>
+              {summary}
+            </CinematicIntro>
           </div>
-          <div className="lg:col-span-5">
-            <p className="max-w-prose text-lede text-stone">{car.summary}</p>
-            <ReviewNote
-              review={car.review}
-              className="mt-6"
-              pendingText="This entry shows sample facts only. Its history and specifications will be added with sources."
-            />
+        ) : (
+          <div className="enter-rise mt-8 grid gap-6 lg:mt-12 lg:grid-cols-12 lg:items-end lg:gap-12">
+            <div className="lg:col-span-7">
+              {maker && (
+                <Link href={`/manufacturers/${maker.slug}`} className="link-quiet text-label text-crimson-text">
+                  {maker.name}
+                </Link>
+              )}
+              <h1 className="mt-3 text-display-lg text-ivory">{car.name}</h1>
+              <p className="mt-4 text-label text-ash">{car.kind}</p>
+            </div>
+            <div className="lg:col-span-5">{summary}</div>
           </div>
-        </div>
+        )}
 
-        <div className="mt-8 lg:mt-10">
-          <CarGallery name={fullName(car)} items={galleryItems} />
-        </div>
+        {/* With a title sequence the only photograph is already shown above. */}
+        {!(car.intro && supporting.length === 0) && (
+          <div className="mt-8 lg:mt-10">
+            <CarGallery name={fullName(car)} items={galleryItems} preloadLead={!car.intro} />
+          </div>
+        )}
       </header>
 
       <DetailSection id="facts-title" title="Key facts">

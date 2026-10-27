@@ -117,6 +117,21 @@ export type VehicleVersion = Sourced & {
   description: string;
 };
 
+/**
+ * Opt-in title sequence at the top of a car page, built from the record's own lead photograph and
+ * sourced facts, so it can never state anything the page does not.
+ */
+export type VehicleIntro = {
+  /** Labels of entries in `facts` or `details`, shown in order beneath the name. A label not found is skipped. */
+  context: string[];
+  /**
+   * Wide-screen framing for a photograph with room to spare around the car: the crop's width-to-height
+   * ratio and the CSS object-position to keep. The crop must leave the whole car in view. Narrow
+   * screens always show the whole photograph.
+   */
+  wideCrop?: { ratio: number; position: string };
+};
+
 export type Vehicle = {
   slug: string;
   /** Display name: the model, with the generation in brackets where the record covers one generation. */
@@ -144,6 +159,8 @@ export type Vehicle = {
   /** One sentence on what this record covers, when it is narrower than the model's full history. */
   coverageNote?: string;
   photo: Photo;
+  /** Opens the detail page with a short title sequence built on `photo`. */
+  intro?: VehicleIntro;
   review?: Review;
 };
 
