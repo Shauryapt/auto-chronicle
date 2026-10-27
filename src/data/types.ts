@@ -132,6 +132,26 @@ export type VehicleIntro = {
   wideCrop?: { ratio: number; position: string };
 };
 
+/** One photograph in a turntable or walk-around sequence. */
+export type RotationFrame = {
+  src: StaticImageData;
+  /** Key into `imageCredits`; every frame is credited like any other photograph. */
+  creditId: CreditId;
+};
+
+/**
+ * A genuine 360° sequence: photographs of one car, from one session, taken at successive, roughly
+ * even angles all the way round it, in order. Separate photographs of a model, or of different
+ * cars, never qualify, however well they line up.
+ */
+export type RotationSequence = {
+  frames: RotationFrame[];
+  /** The car shown, as stated on the frames' source pages, e.g. "911 Carrera S, 992 generation, 2019". */
+  depicts: string;
+  /** Which way the car turns as the frame index rises, so dragging moves it the way the hand moves. */
+  direction: "clockwise" | "anticlockwise";
+};
+
 export type Vehicle = {
   slug: string;
   /** Display name: the model, with the generation in brackets where the record covers one generation. */
@@ -161,6 +181,8 @@ export type Vehicle = {
   photo: Photo;
   /** Opens the detail page with a short title sequence built on `photo`. */
   intro?: VehicleIntro;
+  /** A verified 360° photograph sequence. Absent unless one exists; the comparison page says so. */
+  rotation?: RotationSequence;
   review?: Review;
 };
 
