@@ -9,7 +9,7 @@ export function FeaturedCars() {
         <SectionHeading
           id="cars-title"
           title="Featured cars"
-          aside="Sample entries list only widely documented basics. Each car's page cites the sources for its facts."
+          aside="Cards show widely documented basics. Each car’s page cites the sources for its facts."
         >
           Four cars from four different corners of motoring: a classic grand tourer, a modern performance coupé, an
           everyday hatchback and an electric saloon.

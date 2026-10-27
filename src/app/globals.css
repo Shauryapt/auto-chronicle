@@ -179,6 +179,161 @@
 }
 
 /*
+ * Car-page title sequence (CinematicIntro), about three seconds: a crimson line crosses the dark
+ * stage, the name and its context arrive, then the photograph comes up out of the dark. Every element's
+ * own style is its finished state; the keyframes only describe the way in. So with motion reduced,
+ * animations unsupported or the sequence skipped (IntroSequence finishes the animations), the page
+ * shows the completed frame. Only opacity and transform are animated.
+ */
+.intro-sweep {
+  opacity: 0;
+  transform-origin: left;
+  background: linear-gradient(90deg, transparent, var(--crimson) 14%, var(--crimson-text) 50%, var(--crimson) 86%, transparent);
+}
+.intro-glint {
+  opacity: 0;
+  transform: translateY(-50%);
+  background:
+    linear-gradient(90deg, transparent, var(--ivory) 50%, transparent) center / 100% 1px no-repeat,
+    radial-gradient(closest-side, rgb(165 28 48 / 0.35), transparent);
+}
+.intro-rule {
+  transform-origin: left;
+}
+/*
+ * Feathers the photograph into the stage, so it comes out of the dark rather than sitting in a box.
+ * The lower fade stops at the road, below the wheels. Edge to edge on narrow screens, only the top
+ * and bottom fade; across the column on wide screens, the sides soften too.
+ */
+.intro-mask {
+  mask-image: linear-gradient(180deg, transparent, #000 6%, #000 90%, transparent);
+}
+@media (min-width: 64rem) {
+  .intro-mask {
+    mask-image:
+      linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent),
+      linear-gradient(180deg, transparent, #000 5%, #000 93%, transparent);
+    mask-composite: intersect;
+  }
+}
+
+/*
+ * The control reads "Skip intro" while the sequence runs and "Replay intro" once it has finished.
+ * Until IntroSequence takes charge it keeps its space but stays invisible and out of the tab order,
+ * so nothing shifts when it appears. With reduced motion there is nothing to skip or replay, so it
+ * is removed and the photo credit takes the whole line.
+ */
+.intro-control {
+  visibility: hidden;
+}
+[data-intro] .intro-control {
+  visibility: visible;
+}
+.intro-replay,
+[data-intro="done"] .intro-skip {
+  display: none;
+}
+[data-intro="done"] .intro-replay {
+  display: inline;
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-control {
+    display: none;
+  }
+}
+
+@keyframes intro-sweep {
+  0% {
+    opacity: 1;
+    transform: scaleX(0);
+  }
+  45% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes intro-glint {
+  0% {
+    opacity: 0;
+    transform: translate(-100%, -50%);
+  }
+  20%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(300%, -50%);
+  }
+}
+
+@keyframes intro-unmask {
+  from {
+    transform: translateY(110%);
+  }
+}
+
+@keyframes intro-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes intro-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes intro-photo {
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .intro-sweep {
+    animation: intro-sweep 2600ms var(--ease-out-soft) both;
+  }
+  .intro-glint {
+    animation: intro-glint 1500ms 150ms cubic-bezier(0.45, 0, 0.55, 1) both;
+  }
+  .intro-maker {
+    animation: rise-in 700ms 250ms var(--ease-out-soft) both;
+  }
+  .intro-name {
+    animation: intro-unmask 1100ms 350ms var(--ease-out-soft) both;
+  }
+  .intro-subtitle {
+    animation: intro-unmask 1100ms 520ms var(--ease-out-soft) both;
+  }
+  .intro-aside {
+    animation: rise-in 900ms 600ms var(--ease-out-soft) both;
+  }
+  .intro-kind {
+    animation: intro-fade 800ms 800ms ease-out both;
+  }
+  .intro-photo {
+    animation: intro-photo 2000ms 800ms var(--ease-out-soft) both;
+  }
+  .intro-rule {
+    animation: intro-draw 900ms 950ms var(--ease-out-soft) both;
+  }
+  .intro-context {
+    animation: rise-in 800ms 1050ms var(--ease-out-soft) both;
+  }
+  .intro-caption {
+    animation: intro-fade 800ms 1900ms ease-out both;
+  }
+}
+
+/*
  * Scroll-linked reveal for a few index sections, where supported. Without support, content simply shows.
  * The range ends after a fixed distance so tall elements (long lists on mobile) are not left half-faded.
  */

@@ -18,6 +18,8 @@ type CarGalleryProps = {
   name: string;
   /** The lead exterior photograph first, then the supporting images. */
   items: GalleryItem[];
+  /** Preload the lead photograph as the likely largest paint. Off when something above it already is. */
+  preloadLead?: boolean;
 };
 
 function caption(item: GalleryItem) {
@@ -29,7 +31,7 @@ function caption(item: GalleryItem) {
  * every image. The viewer is a native modal dialog, so the page behind it is inert, focus stays
  * inside it and Escape closes it.
  */
-export function CarGallery({ name, items }: CarGalleryProps) {
+export function CarGallery({ name, items, preloadLead = true }: CarGalleryProps) {
   const [index, setIndex] = useState<number | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
@@ -112,7 +114,7 @@ export function CarGallery({ name, items }: CarGalleryProps) {
             src={lead.src}
             alt={lead.alt}
             fill
-            preload
+            preload={preloadLead}
             placeholder="blur"
             sizes={supporting.length > 0 ? "(min-width: 1024px) 60vw, 100vw" : "100vw"}
             className="enter-plate photo-grade object-cover transition-transform duration-[1200ms] ease-soft group-hover:scale-[1.02] motion-reduce:transition-none"

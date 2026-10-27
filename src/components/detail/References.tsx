@@ -48,7 +48,7 @@ export function References({ citations, photoCredits, logoCredits }: ReferencesP
         </div>
       ) : (
         <p className="max-w-prose text-stone">
-          No facts on this page are sourced yet. Entries will cite their sources here as they are researched.
+          Nothing on this page needs a citation: its directory details are general descriptions, not sourced claims.
         </p>
       )}
 

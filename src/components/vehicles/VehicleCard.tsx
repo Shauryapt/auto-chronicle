@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { getManufacturer } from "@/data/manufacturers";
 import type { Vehicle } from "@/data/types";
-import { StatusTag } from "@/components/ui/StatusTag";
 
 type VehicleCardProps = {
   vehicle: Vehicle;
@@ -16,10 +15,7 @@ export function VehicleCard({ vehicle, sizes = "(min-width: 1280px) 22vw, (min-w
 
   return (
     <article id={`car-${vehicle.slug}`} className="group relative flex h-full flex-col border-t border-line-strong pt-5">
-      <div className="flex items-center justify-between gap-3 text-label">
-        <span className="text-stone">{vehicle.kind}</span>
-        <StatusTag>Sample entry</StatusTag>
-      </div>
+      <p className="text-label text-stone">{vehicle.kind}</p>
       <div className="relative mt-5 aspect-3/2 overflow-hidden bg-ink-high">
         <Image
           src={vehicle.photo.src}

@@ -124,6 +124,8 @@ const featured: Vehicle[] = [
         creditId: "gallery-e-type-coupe-rear",
       },
     ],
+    // The car fills the lower half of a tall street scene; on wide screens trim the shop front above it.
+    intro: { context: ["Series 1 built"], wideCrop: { ratio: 2.6, position: "50% 88%" } },
     review: { reviewed: REVIEWED, scope: "Launch, production span, layout, bodies and engines checked against the sources below." },
   },
   {
@@ -205,6 +207,7 @@ const featured: Vehicle[] = [
         creditId: "gallery-911-992-targa",
       },
     ],
+    intro: { context: ["Generation", "Production"] },
     review: { reviewed: REVIEWED, scope: "Premiere, production start, layout, body styles and the 2024 update checked against the sources below." },
   },
   {

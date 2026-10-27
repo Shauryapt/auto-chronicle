@@ -117,6 +117,41 @@ export type VehicleVersion = Sourced & {
   description: string;
 };
 
+/**
+ * Opt-in title sequence at the top of a car page, built from the record's own lead photograph and
+ * sourced facts, so it can never state anything the page does not.
+ */
+export type VehicleIntro = {
+  /** Labels of entries in `facts` or `details`, shown in order beneath the name. A label not found is skipped. */
+  context: string[];
+  /**
+   * Wide-screen framing for a photograph with room to spare around the car: the crop's width-to-height
+   * ratio and the CSS object-position to keep. The crop must leave the whole car in view. Narrow
+   * screens always show the whole photograph.
+   */
+  wideCrop?: { ratio: number; position: string };
+};
+
+/** One photograph in a turntable or walk-around sequence. */
+export type RotationFrame = {
+  src: StaticImageData;
+  /** Key into `imageCredits`; every frame is credited like any other photograph. */
+  creditId: CreditId;
+};
+
+/**
+ * A genuine 360° sequence: photographs of one car, from one session, taken at successive, roughly
+ * even angles all the way round it, in order. Separate photographs of a model, or of different
+ * cars, never qualify, however well they line up.
+ */
+export type RotationSequence = {
+  frames: RotationFrame[];
+  /** The car shown, as stated on the frames' source pages, e.g. "911 Carrera S, 992 generation, 2019". */
+  depicts: string;
+  /** Which way the car turns as the frame index rises, so dragging moves it the way the hand moves. */
+  direction: "clockwise" | "anticlockwise";
+};
+
 export type Vehicle = {
   slug: string;
   /** Display name: the model, with the generation in brackets where the record covers one generation. */
@@ -144,6 +179,10 @@ export type Vehicle = {
   /** One sentence on what this record covers, when it is narrower than the model's full history. */
   coverageNote?: string;
   photo: Photo;
+  /** Opens the detail page with a short title sequence built on `photo`. */
+  intro?: VehicleIntro;
+  /** A verified 360° photograph sequence. Absent unless one exists; the comparison page says so. */
+  rotation?: RotationSequence;
   review?: Review;
 };
 
