@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
-import { carsHref, factsByRow, firstYear, KNOWN_LABELS, labelAddsContext, parseCarsParam, powerUnit, rowFor } from "./compare.ts";
+import { carsHref, COMPARE_GROUPS, factsByRow, firstYear, KNOWN_LABELS, labelAddsContext, parseCarsParam, powerUnit, rowApplies, rowFor } from "./compare.ts";
 
 const known = new Set(["porsche-911-992", "jaguar-e-type-series-1", "porsche-taycan", "ford-model-t"]);
 const defaults = ["porsche-911-992", "jaguar-e-type-series-1"];
@@ -61,6 +61,15 @@ describe("placing facts in rows", () => {
     assert.equal(labelAddsContext("Engine"), false);
     assert.equal(labelAddsContext("Unveiled"), true);
     assert.equal(labelAddsContext("Power (SAE gross)"), true);
+  });
+
+  it("treats electric range as not applicable to cars that are not battery-electric", () => {
+    const rows = COMPARE_GROUPS.flatMap((g) => g.rows);
+    const range = rows.find((r) => r.id === "range");
+    const engine = rows.find((r) => r.id === "engine");
+    assert.equal(rowApplies(range, ["electric"]), true);
+    assert.equal(rowApplies(range, ["classic"]), false);
+    assert.equal(rowApplies(engine, []), true, "rows without a category apply to every car");
   });
 
   it("never matches a unit inside another word", () => {

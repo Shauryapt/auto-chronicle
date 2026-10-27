@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test src/lib/search-match.test.mjs src/lib/compare.test.mjs src/lib/rotation.test.mjs"
+    "test": "node --test src/lib/search-match.test.mjs src/lib/compare.test.mjs src/lib/rotation.test.mjs src/lib/site.test.mjs"
   },
   "dependencies": {
     "next": "16.4.3",

@@ -2,13 +2,15 @@ export type NavItem =
   | { label: string; href: string; status: "live" }
   | { label: string; status: "soon" };
 
-/** Primary navigation. Sections that are not built yet are shown as "soon" rather than linked. */
+/**
+ * Primary navigation. A section that is not built yet can be listed as "soon", but none is
+ * advertised at launch: unfinished sections stay out of the navigation until they exist.
+ */
 export const primaryNav: NavItem[] = [
   { label: "Discover", href: "/#discover", status: "live" },
   { label: "Manufacturers", href: "/#manufacturers", status: "live" },
   { label: "The Archive", href: "/#archive", status: "live" },
   { label: "Compare", href: "/compare", status: "live" },
-  { label: "Upcoming", status: "soon" },
 ];
 
 export const homeSections = [
@@ -19,5 +21,3 @@ export const homeSections = [
   { label: "Discover by category", href: "/#discover" },
   { label: "Search", href: "/#search" },
 ];
-
-export const futurePages = ["About", "Editorial policy", "Contact", "Privacy"];

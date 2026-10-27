@@ -9,7 +9,7 @@ export function EraTimeline() {
         <SectionHeading
           id="archive-title"
           title="The Archive, era by era"
-          aside="Era overviews are broad summaries. Dated milestones will be added with sources."
+          aside="Era overviews are broad summaries. Dated facts are cited on each car’s own page."
         >
           Motoring history, read in four broad periods. Each one changed what a car was for and who could own one.
         </SectionHeading>

@@ -14,7 +14,7 @@ export default function NotFound() {
           This page isn’t in the archive
         </h1>
         <p className="mt-5 max-w-prose text-lede text-stone">
-          The address may be mistyped, or the car or manufacturer may not have an entry yet. Search the sample archive
+          The address may be mistyped, or the car or manufacturer may not have an entry yet. Search the archive
           or browse the manufacturer index instead.
         </p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">

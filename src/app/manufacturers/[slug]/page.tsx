@@ -8,6 +8,7 @@ import { getManufacturer, manufacturers } from "@/data/manufacturers";
 import type { Manufacturer } from "@/data/types";
 import { getVehiclesByManufacturer } from "@/data/vehicles";
 import { createCitations } from "@/lib/citations";
+import { canonical } from "@/lib/site";
 import { Breadcrumbs } from "@/components/detail/Breadcrumbs";
 import { Cite } from "@/components/detail/Cite";
 import { DetailSection } from "@/components/detail/DetailSection";
@@ -33,7 +34,7 @@ export function generateStaticParams() {
 }
 
 function describe(maker: Manufacturer) {
-  return maker.intro?.text ?? `${maker.name}, ${maker.country}: ${maker.knownFor}. A manufacturer profile in preparation at Auto Chronicle.`;
+  return maker.intro?.text ?? `${maker.name}, ${maker.country}: ${maker.knownFor}. A directory entry in Auto Chronicle, the independent automotive encyclopedia.`;
 }
 
 export async function generateMetadata({ params }: PageProps<"/manufacturers/[slug]">): Promise<Metadata> {
@@ -45,6 +46,7 @@ export async function generateMetadata({ params }: PageProps<"/manufacturers/[sl
   return {
     title: maker.name,
     description,
+    alternates: canonical(`/manufacturers/${maker.slug}`),
     openGraph: { title: `${maker.name} — Auto Chronicle`, description, type: "article", siteName: "Auto Chronicle", locale: "en_GB" },
     twitter: { card: "summary", title: `${maker.name} — Auto Chronicle`, description },
   };
@@ -137,7 +139,11 @@ export default async function ManufacturerPage({ params }: PageProps<"/manufactu
             <ReviewNote
               review={maker.review}
               className="mt-7"
-              pendingText={`This profile shows ${maker.name}’s directory entry only. Its history and facts will be added with sources.`}
+              pendingText={
+                cars.length > 0
+                  ? `This page lists ${maker.name}’s directory details and its cars in the archive. The marque’s own history is not covered here; each car’s page cites its sources.`
+                  : `This page lists ${maker.name}’s directory details only. The archive does not cover the marque’s history or cars.`
+              }
             />
           </div>
           {maker.heroPhoto && (
@@ -166,20 +172,16 @@ export default async function ManufacturerPage({ params }: PageProps<"/manufactu
         </DetailSection>
       )}
 
-      <DetailSection id="vehicles-title" title={`${maker.name} in the archive`}>
-        {cars.length > 0 ? (
+      {/* A marque without cars in the archive has no section here; its directory note says so. */}
+      {cars.length > 0 && (
+        <DetailSection id="vehicles-title" title={`${maker.name} in the archive`}>
           <div className="grid gap-x-8 gap-y-12 sm:grid-cols-2">
             {cars.map((car) => (
               <VehicleCard key={car.slug} vehicle={car} sizes="(min-width: 1024px) 28vw, (min-width: 640px) 45vw, 100vw" />
             ))}
           </div>
-        ) : (
-          <p className="max-w-prose text-stone">
-            No {maker.name} vehicles are in the archive yet. The collection is being developed, and cars will appear here
-            as their entries are researched.
-          </p>
-        )}
-      </DetailSection>
+        </DetailSection>
+      )}
 
       <DetailSection id="references-title" title="References">
         <References citations={citations} photoCredits={photoCredits} logoCredits={logoCreditList} />

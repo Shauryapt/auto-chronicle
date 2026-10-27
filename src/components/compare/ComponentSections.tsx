@@ -112,7 +112,7 @@ function FillPhoto({ photo, sizes }: { photo: ComparePhoto; sizes: string }) {
 
 /** Said in place of a photograph the archive does not have; nothing unrelated stands in for it. */
 function NoPhoto({ what }: { what: string }) {
-  return <p className="border-y border-line py-4 text-label text-ash">No photograph of the {what} in the archive yet.</p>;
+  return <p className="border-y border-line py-4 text-label text-ash">The archive has no photograph of this car’s {what}.</p>;
 }
 
 /**

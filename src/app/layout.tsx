@@ -3,6 +3,7 @@ import { Archivo, Bodoni_Moda } from "next/font/google";
 import { AnnouncementStrip } from "@/components/layout/AnnouncementStrip";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { siteOrigin } from "@/lib/site";
 import "./globals.css";
 
 const bodoni = Bodoni_Moda({
@@ -25,6 +26,8 @@ const description =
   "An independent automotive encyclopedia covering manufacturers, landmark cars and the eras of motoring history, from pioneering classics to the electric age.";
 
 export const metadata: Metadata = {
+  // Absolute URLs (canonical, Open Graph) resolve against the configured address; none is assumed.
+  metadataBase: siteOrigin() ?? undefined,
   // Detail pages set their own name; the template adds the site name after it.
   title: { default: title, template: "%s — Auto Chronicle" },
   description,

@@ -40,7 +40,7 @@ export function Hero() {
               </ButtonLink>
             </div>
             <p className="hidden border-l border-crimson pl-4 text-label text-ash sm:block">
-              An encyclopedia in progress, covering marques, models and the eras that connect them.
+              An independent encyclopedia of marques, models and the eras that connect them, with the sources for every car cited.
             </p>
           </div>
         </div>

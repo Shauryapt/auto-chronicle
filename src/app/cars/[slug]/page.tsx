@@ -7,6 +7,7 @@ import { getManufacturer } from "@/data/manufacturers";
 import type { Vehicle } from "@/data/types";
 import { getVehicle, getVehiclesByManufacturer, vehicles } from "@/data/vehicles";
 import { createCitations } from "@/lib/citations";
+import { canonical } from "@/lib/site";
 import { Breadcrumbs } from "@/components/detail/Breadcrumbs";
 import { DetailSection } from "@/components/detail/DetailSection";
 import { FactList } from "@/components/detail/FactList";
@@ -45,6 +46,7 @@ export async function generateMetadata({ params }: PageProps<"/cars/[slug]">): P
   return {
     title,
     description: car.summary,
+    alternates: canonical(`/cars/${car.slug}`),
     openGraph: { title: `${title} — Auto Chronicle`, description: car.summary, type: "article", siteName: "Auto Chronicle", locale: "en_GB" },
     twitter: { card: "summary", title: `${title} — Auto Chronicle`, description: car.summary },
   };
@@ -94,7 +96,7 @@ export default async function CarPage({ params }: PageProps<"/cars/[slug]">) {
       <ReviewNote
         review={car.review}
         className="mt-6"
-        pendingText="This entry shows sample facts only. Its history and specifications will be added with sources."
+        pendingText="This entry lists widely documented basics only; its history and specifications are not covered here."
       />
     </>
   );

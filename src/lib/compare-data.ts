@@ -2,7 +2,7 @@ import type { StaticImageData } from "next/image";
 import { imageCredits } from "@/data/image-credits";
 import { getManufacturer } from "@/data/manufacturers";
 import type { SourceId } from "@/data/sources";
-import type { GalleryRole, ImageCredit, Photo, Vehicle } from "@/data/types";
+import type { CategorySlug, GalleryRole, ImageCredit, Photo, Vehicle } from "@/data/types";
 import { vehicles } from "@/data/vehicles";
 import { factsByRow, firstYear, type CompareFact } from "./compare";
 import { buildSearchIndex } from "./search";
@@ -43,6 +43,7 @@ export type CompareCar = {
   /** The maker's own generation or model code, where a source uses one. */
   code?: string;
   kind: string;
+  categories: CategorySlug[];
   summary: string;
   /** First year in the record's introduction fact, for "years apart". */
   introduced: number | null;
@@ -89,6 +90,7 @@ function toCompareCar(car: Vehicle): CompareCar {
     title: maker ? `${maker.name} ${car.name}` : car.name,
     code: car.generation,
     kind: car.kind,
+    categories: car.categories,
     summary: car.summary,
     introduced: firstYear(rows.introduced?.[0]?.value) ?? firstYear(rows.production?.[0]?.value),
     span: rows.production?.[0],

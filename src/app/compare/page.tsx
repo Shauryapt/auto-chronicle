@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { buildComparisonData, DEFAULT_COMPARISON } from "@/lib/compare-data";
 import { parseCarsParam } from "@/lib/compare";
+import { canonical } from "@/lib/site";
 import { Breadcrumbs } from "@/components/detail/Breadcrumbs";
 import { CompareFromUrl, CompareView } from "@/components/compare/CompareExperience";
 
@@ -13,6 +14,8 @@ const description =
 export const metadata: Metadata = {
   title,
   description,
+  // Every ?cars= combination is the same page with a different selection, so all point to /compare.
+  alternates: canonical("/compare"),
   openGraph: { title: `${title} — Auto Chronicle`, description, type: "website", siteName: "Auto Chronicle", locale: "en_GB" },
   twitter: { card: "summary", title: `${title} — Auto Chronicle`, description },
 };

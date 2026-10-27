@@ -63,19 +63,19 @@ export function SearchPanel({ index, categoryOptions, scopeNote }: SearchPanelPr
   const hasQuery = query.trim().length > 0;
   let status: string;
   if (!hasQuery && !category) {
-    status = "Start typing to search the sample archive.";
+    status = "Start typing to search the archive.";
   } else if (results.length === 0) {
     status = hasQuery
-      ? `No sample entries match “${query.trim()}”${category ? ` in ${category.name}` : ""}.`
-      : `No sample entries in ${category?.name} yet.`;
+      ? `Nothing in the archive matches “${query.trim()}”${category ? ` in ${category.name}` : ""}.`
+      : `No entries in ${category?.name}.`;
   } else {
     const noun = results.length === 1 ? "entry" : "entries";
-    status = `${results.length} sample ${noun}${hasQuery ? ` for “${query.trim()}”` : ""}${category ? ` in ${category.name}` : ""}.`;
+    status = `${results.length} ${noun}${hasQuery ? ` for “${query.trim()}”` : ""}${category ? ` in ${category.name}` : ""}.`;
   }
 
   return (
     <div>
-      <form role="search" aria-label="Sample archive" onSubmit={(e) => e.preventDefault()}>
+      <form role="search" aria-label="Archive" onSubmit={(e) => e.preventDefault()}>
         <label htmlFor={inputId} className="sr-only">
           Search cars, manufacturers and eras
         </label>
@@ -163,8 +163,8 @@ export function SearchPanel({ index, categoryOptions, scopeNote }: SearchPanelPr
 
       {hasQuery && results.length === 0 && (
         <p className="mt-4 max-w-prose text-stone">
-          Search covers the sample entries on this page only. Try a manufacturer name such as Jaguar, a model such
-          as Taycan, or an era such as pioneers.
+          Search covers the cars, manufacturers and eras in the archive. Try a manufacturer name such as Jaguar, a
+          model such as Taycan, or an era such as pioneers.
           {category && (
             <>
               {" "}

@@ -29,13 +29,23 @@ export function CompareSection({ id, title, note, children }: CompareSectionProp
 type FactEntriesProps = {
   facts: CompareFact[] | undefined;
   citations: Citations;
+  /** Set when the row cannot apply to this car, with the reason read to screen readers. */
+  notApplicable?: string;
 };
 
 /**
  * A comparison cell: each recorded value with its sources, and the label and scope it was recorded
  * under where they say more than the row heading, so a value is never read out of its context.
  */
-export function FactEntries({ facts, citations }: FactEntriesProps) {
+export function FactEntries({ facts, citations, notApplicable }: FactEntriesProps) {
+  if ((!facts || facts.length === 0) && notApplicable) {
+    return (
+      <p className="text-label text-ash" title={notApplicable}>
+        <span aria-hidden="true">n/a</span>
+        <span className="sr-only">{notApplicable}</span>
+      </p>
+    );
+  }
   if (!facts || facts.length === 0) {
     // A quiet dash rather than a sentence in every cell; the section note explains it, the tooltip
     // repeats it for a pointer, and screen readers hear the words. It never stands for zero.
@@ -65,7 +75,7 @@ export function FactEntries({ facts, citations }: FactEntriesProps) {
 }
 
 /** What a dash in a comparison cell means. */
-export const MISSING_LABEL = "Not recorded in this archive";
+export const MISSING_LABEL = "Not established in the available sources";
 
 /**
  * A car's name as a link to its own page, by its slug. It keeps the look of the text around it and

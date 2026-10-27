@@ -67,7 +67,7 @@ export function VehiclePanel({ car, slot, density, citations, canRemove, onRepla
           ) : (
             <span className="text-label text-crimson-text">{car.maker}</span>
           )}
-          {!car.reviewed && <StatusTag>Facts not yet checked</StatusTag>}
+          {!car.reviewed && <StatusTag>Basics only</StatusTag>}
         </div>
         <h3
           id={`car-${slot}-title`}

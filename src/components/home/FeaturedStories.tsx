@@ -3,7 +3,6 @@ import Link from "next/link";
 import { stories } from "@/data/stories";
 import type { Story } from "@/data/types";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { StatusTag } from "@/components/ui/StatusTag";
 
 function StoryCard({ story, lead = false }: { story: Story; lead?: boolean }) {
   return (
@@ -22,14 +21,10 @@ function StoryCard({ story, lead = false }: { story: Story; lead?: boolean }) {
       </div>
 
       <div className={`flex flex-1 flex-col ${lead ? "pt-6" : "pt-5 sm:pt-0"}`}>
-        <div className="flex flex-wrap items-center gap-3 text-label">
-          <span className="text-crimson-text">{story.theme}</span>
-          <StatusTag>Illustrative feature</StatusTag>
-        </div>
+        <p className="text-label text-crimson-text">{story.theme}</p>
         <h3 className={`mt-3 text-ivory ${lead ? "text-display-md" : "text-display-sm"}`}>{story.title}</h3>
         <p className={`mt-3 text-stone ${lead ? "max-w-prose text-lede" : ""}`}>{story.dek}</p>
         <p className={`text-label text-ash ${lead ? "mt-auto pt-5" : "mt-4"}`}>
-          Related:{" "}
           {/* The link's hit area covers the whole card. */}
           <Link
             href={story.related.href}
@@ -52,9 +47,9 @@ export function FeaturedStories() {
         <SectionHeading
           id="stories-title"
           title="Stories Behind the Machines"
-          aside="These are outlines of features being written. Full articles will be published with sources."
         >
-          Long-form features on the people, ideas and engineering behind the cars.
+          Three threads that run through the archive, from a silhouette that never changed to the idea that moved
+          the engine behind the driver. Each opens the entry where its story is told.
         </SectionHeading>
 
         <div className="mt-(--heading-gap) grid gap-12 lg:grid-cols-12 lg:gap-10">

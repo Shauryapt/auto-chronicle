@@ -1,4 +1,5 @@
 import type { SourceId } from "@/data/sources";
+import type { CategorySlug } from "@/data/types";
 
 /*
  * The comparison page's rules, kept free of data and image imports so they can be tested on their
@@ -18,7 +19,12 @@ export type CompareFact = {
   sources: SourceId[];
 };
 
-export type CompareRow = { id: string; heading: string };
+export type CompareRow = {
+  id: string;
+  heading: string;
+  /** Only cars in this category can have the value at all; for others it does not apply, rather than being unknown. */
+  onlyFor?: CategorySlug;
+};
 export type CompareGroup = { id: string; title: string; rows: CompareRow[] };
 
 /** The sections of the specification comparison, in reading order. */
@@ -50,8 +56,8 @@ export const COMPARE_GROUPS: CompareGroup[] = [
     title: "Battery and range",
     rows: [
       { id: "electrics", heading: "Electrical system" },
-      { id: "range", heading: "Range" },
-      { id: "efficiency", heading: "Efficiency" },
+      { id: "range", heading: "Electric range", onlyFor: "electric" },
+      { id: "efficiency", heading: "Electric efficiency", onlyFor: "electric" },
     ],
   },
   {
@@ -170,6 +176,14 @@ export function factsByRow(facts: CompareFact[]): Record<string, CompareFact[]> 
     if (row) (rows[row] ??= []).push(fact);
   }
   return rows;
+}
+
+/**
+ * Whether a row can have a value for a car. A battery-electric car's range does not apply to a petrol
+ * or hybrid car, so that gap is "does not apply", not "unknown". Rows without `onlyFor` apply to all.
+ */
+export function rowApplies(row: CompareRow, categories: readonly CategorySlug[]): boolean {
+  return !row.onlyFor || categories.includes(row.onlyFor);
 }
 
 /** The first four-digit year in a recorded value, e.g. 1961 from "1961–1968"; null when there is none. */

@@ -19,7 +19,7 @@ function SearchFallback({ scopeNote }: { scopeNote: string }) {
       </div>
       <p className="mt-8 text-label text-ash">{scopeNote}</p>
       <noscript>
-        <p className="mt-4 text-stone">Search needs JavaScript. Every sample entry is also listed on this page.</p>
+        <p className="mt-4 text-stone">Search needs JavaScript. Every car and manufacturer is also listed on this page.</p>
       </noscript>
     </div>
   );
@@ -30,7 +30,7 @@ export function SearchSection() {
   const categoryOptions = categories
     .filter((c) => countVehiclesInCategory(c.slug) > 0)
     .map(({ slug, name }) => ({ slug, name }));
-  const scopeNote = `Searching sample data only: ${vehicles.length} cars, ${manufacturers.length} manufacturers and ${eras.length} eras. The full archive is not connected yet.`;
+  const scopeNote = `The archive holds ${vehicles.length} cars, ${manufacturers.length} manufacturers and ${eras.length} eras.`;
 
   return (
     <section id="search" aria-labelledby="search-title" className="section-y border-t border-line bg-ink-raised">

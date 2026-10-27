@@ -1,4 +1,4 @@
-import { COMPARE_GROUPS, powerUnit } from "@/lib/compare";
+import { COMPARE_GROUPS, powerUnit, rowApplies } from "@/lib/compare";
 import type { CompareCar } from "@/lib/compare-data";
 import type { Citations } from "@/lib/citations";
 import { CarNameLink, CompareSection, FactEntries } from "./CompareParts";
@@ -33,7 +33,7 @@ export function SpecComparison({ cars, citations }: SpecComparisonProps) {
     <CompareSection
       id="specs-title"
       title="The numbers behind the machines"
-      note="Only facts found in the cited sources. Where a value applies to particular versions, the version is named beneath it. A dash (—) means the archive has no verified value for that car yet."
+      note="Only facts found in the cited sources. Where a value applies to particular versions, the version is named beneath it. A dash (—) means the sources do not establish the value; n/a means it does not apply to that car."
     >
       {/*
         Car names head the columns from tablet width up, in a slim strip that stays in view while the
@@ -67,7 +67,11 @@ export function SpecComparison({ cars, citations }: SpecComparisonProps) {
                         <span className="text-label text-crimson-text">{car.maker}</span>{" "}
                         <span className="text-[0.9375rem] font-medium text-ivory">{car.name}</span>
                       </span>
-                      <FactEntries facts={car.rows[row.id]} citations={citations} />
+                      <FactEntries
+                        facts={car.rows[row.id]}
+                        citations={citations}
+                        notApplicable={rowApplies(row, car.categories) ? undefined : "Does not apply: not a battery-electric car"}
+                      />
                     </dd>
                   ))}
                 </div>

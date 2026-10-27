@@ -11,10 +11,10 @@ export function ManufacturerIndex() {
         <SectionHeading
           id="manufacturers-title"
           title="Explore manufacturers"
-          aside="Auto Chronicle is independent. Marque names and logos are trademarks of their owners, shown for identification only. Some marque profiles are still in preparation."
+          aside="Auto Chronicle is independent. Marque names and logos are trademarks of their owners, shown for identification only."
         >
-          A first index of marques, grouped by where they began. Each profile will cover the company&rsquo;s history,
-          its defining cars and the people behind them.
+          {manufacturers.length} marques, grouped by where they began, with the cars of each that the archive covers.
+          Profiles with a sourced history say so.
         </SectionHeading>
 
         <div className="mt-(--heading-gap) space-y-10 lg:space-y-12">
